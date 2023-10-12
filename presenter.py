@@ -5,9 +5,8 @@ class HistogramPresenter:
         self._view = view
         self._model = model
 
-        # self.view.connect_histogram_submit(self.handle_button)
-        # self.view.histogram_btn.clicked.connect(self.submit_histogram_to_make_slice)
-
+        self.view.connect_histogram_submit(self.handle_button)
+        self.view.histogram_btn.clicked.connect(self.submit_histogram_to_make_slice)
 
     @property
     def view(self):
@@ -40,23 +39,15 @@ class HistogramPresenter:
 
     def submit_histogram_to_make_slice(self):
         """Submit the histogram to the model"""
-        # only submit if the view is valid
-        if self.ready_for_histogram():
-            # disable Histogram button while running
-            self.view.disable_while_running(True)
+        # disable Histogram button while running
+        self.view.disable_while_running(True)
 
-            # gather the parameters from the view for MakeSlice
-            config = self.build_config_for_make_slice()
+        # gather the parameters from the view for MakeSlice
+        config = self.build_config_for_make_slice()
 
-            # send to model for processing
-            self.model.do_make_slice(config)
+        # send to model for processing
+        self.model.do_make_slice(config)
 
-            # update the plot name in the histogram parameters view
-            self.view.histogram_parameters.update_plot_num()
+        # update the plot name in the histogram parameters view
+        self.view.histogram_parameters.update_plot_num()
 
-    def ready_for_histogram(self):
-        """Check if the view is ready to submit a histogram"""
-        # messages from models are passed to views
-        if self.view.gather_workspace_data() is None or not self.view.histogram_parameters.is_valid:
-            return False
-        return True

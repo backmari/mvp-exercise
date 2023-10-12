@@ -1,18 +1,4 @@
 """Model for the Histogram tab"""
-import time
-import os.path
-from typing import Tuple
-import numpy as np
-
-# pylint: disable=no-name-in-module
-from mantid.api import (
-    AlgorithmManager,
-    AlgorithmObserver,
-    AnalysisDataServiceObserver,
-    Progress,
-)
-from mantid.simpleapi import mtd, DeleteWorkspace, RenameWorkspace, SaveMD, AddSampleLog
-from mantid.kernel import Logger
 from mantid.geometry import (
     SymmetryOperationFactory,
     SpaceGroupFactory,
