@@ -1,84 +1,46 @@
 """PyQt QGroupBox for the histogram parameters"""
-from qtpy.QtCore import Signal
 from qtpy.QtWidgets import (
     QWidget,
-    QHBoxLayout,
     QVBoxLayout,
     QPushButton,
-    QGroupBox,
     QFormLayout,
     QLineEdit,
     QDoubleSpinBox,
 )
-from invalid_styles import INVALID_QLINEEDIT
 
 
 class Histogram(QWidget):
     """Histogram widget"""
 
-    error_message_signal = Signal(str)
-    makeslice_finish_signal = Signal(str, int)
-    msg_queue = []
-
-    plot_num = 1
-    name_base = "Histogram"
-
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        # check the state of the required fields
-        # based on the fields states
-        self.field_errors = []
-        self.plot_display_name_callback = None
+        layout = QVBoxLayout()
 
-        # self.histogram_parameters = HistogramParameter(self)
+        parameters = QWidget()
+        flayout = QFormLayout()
 
-        self.histogram_parameters = QGroupBox()
+        self.name = QLineEdit(f"Histogram")
+        flayout.addRow("Name", self.name)
 
-        self.histogram_parameters.setTitle("Histogram parameters")
-
-        hlayout = QVBoxLayout()
-        self.projections = QWidget()
-        playout = QFormLayout()
-
-        self.name = QLineEdit(f"{self.name_base} {self.plot_num}")
-        plot_name_layout = QHBoxLayout()
-        plot_name_layout.addWidget(self.name)
-        playout.addRow("Name", plot_name_layout)
-
-        self.projections.setLayout(playout)
-        hlayout.addWidget(self.projections)
-
-        symmetry = QWidget()
-
-        slayout = QFormLayout()
         self.symmetry_operations = QLineEdit()
-        slayout.addRow("Symmetry operations", self.symmetry_operations)
+        flayout.addRow("Symmetry operations", self.symmetry_operations)
 
         # smoothing can't exceed 1_000 and can't be negative
         self.smoothing = QDoubleSpinBox()
         self.smoothing.setRange(0, 1_000)
-        slayout.addRow("Smoothing", self.smoothing)
-        symmetry.setLayout(slayout)
+        flayout.addRow("Smoothing", self.smoothing)
+        parameters.setLayout(flayout)
 
-        hlayout.addWidget(symmetry)
-
-        hlayout.addStretch()
+        layout.addWidget(parameters)
 
         self.histogram_btn = QPushButton("Histogram")
-        hlayout.addWidget(self.histogram_btn)
+        layout.addWidget(self.histogram_btn)
 
-        self.histogram_parameters.setLayout(hlayout)
+        # # submit button
+        # self.histogram_callback = None
 
-        # submit button
-        self.histogram_callback = None
-
-        layout = QHBoxLayout()
-        layout.addWidget(self.histogram_parameters)
         self.setLayout(layout)
-
-        # self.error_message_signal.connect(self._show_error_message)
-        # self.makeslice_finish_signal.connect(self._make_slice_finish)
 
         # self.buttons.connect_error_msg(self.show_error_message)
 

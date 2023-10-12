@@ -27,27 +27,11 @@ class HistogramPresenter:
         """Pass error message to the view"""
         self.view.show_error_message(msg, **kwargs)
 
-    def makeslice_finish(self, ws_name, ndims, error=False):
-        """Handle the makeslice algorithm finishing"""
-
-        # re-enable histogram UI elements
-        self.view.disable_while_running(False)
-
-        # plot the newly generated histogram
-        if not error:
-            self.view.make_slice_finish(ws_name, ndims)
-
     def submit_histogram_to_make_slice(self):
         """Submit the histogram to the model"""
-        # disable Histogram button while running
-        self.view.disable_while_running(True)
 
-        # gather the parameters from the view for MakeSlice
-        config = self.build_config_for_make_slice()
+        # get values from view, e.g. self.view.symmetry.value
+        # and pass to do_make_slice
 
         # send to model for processing
-        self.model.do_make_slice(config)
-
-        # update the plot name in the histogram parameters view
-        self.view.histogram_parameters.update_plot_num()
-
+        self.model.do_make_slice()
