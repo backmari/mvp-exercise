@@ -5,7 +5,12 @@ class HistogramPresenter:
         self._view = view
         self._model = model
 
-        self.view.histogram_btn.clicked.connect(self.submit_histogram_to_make_slice)
+        #way 1
+        #include the button click definition here
+        #self.view.fib_btn.clicked.connect(self.submit_fib)
+
+        #way 2 use callbacks
+        self.view.connect_btn_submit(self.submit_fib_cal)
 
     @property
     def view(self):
@@ -21,8 +26,8 @@ class HistogramPresenter:
         """Pass error message to the view"""
         self.view.show_error_message(msg, **kwargs)
 
-    def submit_histogram_to_make_slice(self):
-        """Submit the histogram to the model"""
+    def submit_fib(self):
+        """Submit the parameters to the model"""
 
         # get values from view
         a = self.view.start.value()
@@ -30,5 +35,14 @@ class HistogramPresenter:
 
         # send to model for processing
         sequence = self.model.do_calculate(a, b)
-
+        #update the results
         self.view.update_result(sequence)
+
+
+    def submit_fib_cal(self, a,b):
+        """Submit the parameters to the model"""
+
+        # send to model for processing
+        sequence = self.model.do_calculate(a, b)
+        #update the results
+        return sequence 

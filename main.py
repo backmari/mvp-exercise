@@ -6,7 +6,7 @@ from view import Histogram
 
 
 class MVPExercise(QMainWindow):
-    """Main Shiver window"""
+    """Main window"""
 
     __instance = None
 
