@@ -5,7 +5,8 @@ from qtpy.QtWidgets import (
     QPushButton,
     QFormLayout,
     QLineEdit,
-    QDoubleSpinBox,
+    QSpinBox,
+    QLabel
 )
 
 
@@ -20,29 +21,33 @@ class Histogram(QWidget):
         parameters = QWidget()
         flayout = QFormLayout()
 
-        self.name = QLineEdit(f"Histogram")
+        self.name = QLineEdit(f"My Fibonacci")
         flayout.addRow("Name", self.name)
 
-        self.symmetry_operations = QLineEdit()
-        flayout.addRow("Symmetry operations", self.symmetry_operations)
+        self.start = QSpinBox()
+        self.start.setRange(0, 1_000)
+        flayout.addRow("Start", self.start)
 
-        # smoothing can't exceed 1_000 and can't be negative
-        self.smoothing = QDoubleSpinBox()
-        self.smoothing.setRange(0, 1_000)
-        flayout.addRow("Smoothing", self.smoothing)
+        self.end = QSpinBox()
+        self.end.setRange(0, 1_000)
+        flayout.addRow("End", self.end)
         parameters.setLayout(flayout)
-
         layout.addWidget(parameters)
 
-        self.histogram_btn = QPushButton("Histogram")
-        layout.addWidget(self.histogram_btn)
+        self.result = QLabel()
+        layout.addWidget(self.result)
 
-        # # submit button
-        # self.histogram_callback = None
+        self.histogram_btn = QPushButton("Calculate")
+        layout.addWidget(self.histogram_btn)
 
         self.setLayout(layout)
 
         # self.buttons.connect_error_msg(self.show_error_message)
+
+    def update_result(self, sequence):
+        # display the Fibonacci sequence
+        sequence_str = " ".join(str(x) for x in sequence)
+        self.result.setText(sequence_str)
 
 #     def set_field_invalid_state(self, item):
 #         """if parent exists then call the corresponding function and update the color"""
