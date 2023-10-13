@@ -5,6 +5,9 @@ class FiboStatsPresenter:
         self._view = view
         self._model = model
 
+        #error message from model to view
+        self.model.connect_error_message(self.error_message)
+
         #way 1
         #include the button click definition here
         self.view.fib_btn.clicked.connect(self.submit_fib)
@@ -33,9 +36,10 @@ class FiboStatsPresenter:
         a,b = self.view.get_parameters()
 
         # send to model for processing
-        sequence = self.model.do_calculate(a, b)
+        data = self.model.do_calculate(a, b)
         #update the results
-        self.view.update_result(sequence)
+        if data is not None: 
+            self.view.update_result(data)
 
 
     def submit_fib_cal(self, a,b):

@@ -5,12 +5,22 @@ from qtpy.QtWidgets import (
     QFormLayout,
     QLineEdit,
     QSpinBox,
-    QLabel
+    QLabel,
+    QErrorMessage
 )
 
-from invalid_styles import INVALID_QSPINBOX
+from fibonacci import fibonacci
+import statistics
+import numpy as np 
 
-class FiboStatsView(QWidget):
+INVALID_QSPINBOX = """
+QLineEdit {
+color: red;
+background-color: pink;
+
+}
+"""
+class FiboStats(QWidget):
     """FiboStats widget"""
 
     def __init__(self, parent=None):
@@ -66,15 +76,8 @@ class FiboStatsView(QWidget):
         self.start.valueChanged.connect(lambda: self.min_max_compare(self.start, self.end))
         self.end.valueChanged.connect(lambda: self.min_max_compare(self.start, self.end))
 
-        #way 2 definitions here
-        #self.fib_btn.clicked.connect(self.btn_submit)
+        self.fib_btn.clicked.connect(self.btn_submit)
 
-    def update_result(self, data):
-        # display the Fibonacci sequence statistics
-        self.mean.setText(str(data["mean"]))
-        self.stdev.setText(str(data["stdev"]))
-        self.perc95.setText(str(data["perc95"]))
-        self.set_result_visible(True)
 
     def set_result_visible(self, flag):
         # show/hide the statistics fields and labels
@@ -97,21 +100,34 @@ class FiboStatsView(QWidget):
     
     def btn_submit(self):
         #submit_fib
-        # get values from view
-        start = self.start.value()
-        end = self.end.value()
-        if self.btn_submit_callback:
-            results = self.btn_submit_callback(start,end)
-        self.update_result(results)
+        # get values
+        small_num = self.start.value()
+        big_num = self.end.value()
 
-    def connect_btn_submit(self, callback):
-        """callback for the apply submit button"""
-        self.btn_submit_callback = callback
+        #run fibonacci
+        try:        
+            sequence = fibonacci(big_num, small_num)
 
+            # to cause TypeError
+            #data_perc95 = round(str(np.percentile(sequence,95)),2)
+
+            #gather data statistics
+            data_stdev = round(statistics.stdev(sequence),2)
+            data_mean = round(statistics.mean(sequence),2)
+            data_perc95 = round(np.percentile(sequence,95),2)
+
+            # display the Fibonacci sequence statistics
+            self.stdev.setText(str(data_stdev))
+            self.mean.setText(str(data_mean))
+            self.perc95.setText(str(data_perc95))
+            self.set_result_visible(True)
+        
+        except (RuntimeError,TypeError, ValueError) as err:
+            self.show_error_message(str(err))
 
     def min_max_compare(self, cmin, cmax):
-        """Ensure Minimum and Maximum value pairs are:
-        Minimum < Maximum """
+        """Ensure cmin and cmax value pairs are:
+        cmin < cmax """
 
         self.set_field_valid_state(cmin)
         self.set_field_valid_state(cmax)
@@ -127,16 +143,27 @@ class FiboStatsView(QWidget):
 
 
     def set_field_invalid_state(self, item):
-        """include the item in the field_error list and disable the corresponding button"""
+        """include the item in the field_error list, update background color 
+        and disable the corresponding button"""
+        
         if item not in self.field_errors:
             self.field_errors.append(item)
         self.fib_btn.setEnabled(False)
         item.lineEdit().setStyleSheet(INVALID_QSPINBOX)
 
     def set_field_valid_state(self, item):
-        """remove the item from the field_error list and enable the corresponding button"""
+        """remove the item from the field_error list, update background color 
+        and enable the corresponding button"""
+
         if item in self.field_errors:
             self.field_errors.remove(item)
         if len(self.field_errors) == 0:
             self.fib_btn.setEnabled(True)
         item.lineEdit().setStyleSheet("")
+
+
+    def show_error_message(self, msg):
+        """Will show a error dialog with the given message"""
+        error = QErrorMessage(self)
+        error.showMessage(msg)
+        error.exec_()                
