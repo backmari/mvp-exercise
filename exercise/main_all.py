@@ -18,13 +18,6 @@ class MVPExercise(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle(f"Statistics")
-        #self.fibostats_view = FiboStatsView(self)
-        #self.figostats_model = FiboStatsModel()
-        #self.fibostats_presenter = FiboStatsPresenter(self.fibostats_view, self.figostats_model)
-        #self.setCentralWidget(self.fibostats_view)
-        
-        self.fibostats = FiboStats(self)
-        self.setCentralWidget(self.fibostats)
 
 if __name__ == "__main__":
     # start window

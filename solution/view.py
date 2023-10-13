@@ -14,12 +14,14 @@ from invalid_styles import INVALID_QSPINBOX
 class FiboStatsView(QWidget):
     """FiboStats widget"""
 
-    def __init__(self, parent=None):
+    def __init__(self, presenter,parent=None):
         super().__init__(parent)
         self.field_errors = []
         
+        #way 1 set presenter
+        self._presenter = presenter
+
         # way 2 button callback 
-        # button callback
         #self.btn_submit_callback = None
 
         layout = QFormLayout()
@@ -64,10 +66,15 @@ class FiboStatsView(QWidget):
         #deactivate the button
         self.fib_btn.setEnabled(False)
 
-        #onclick events
+        #validations
         # check min<max
         self.start.valueChanged.connect(lambda: self.min_max_compare(self.start, self.end))
         self.end.valueChanged.connect(lambda: self.min_max_compare(self.start, self.end))
+
+        #onclick events
+        
+        #way 1
+        self.fib_btn.clicked.connect(self._presenter.submit_fib)
 
         #way 2 button callback 
         # definitions here
@@ -95,10 +102,16 @@ class FiboStatsView(QWidget):
         self.perc95.setVisible(flag)
 
     def get_parameters(self):
+        """returns the parameters star and end"""
         start = self.start.value()
         end = self.end.value()
         return start,end
-    
+
+    # way 1 call presenter function
+    # submit function
+    def btn_submit(self):
+        self._presenter.submit_fib()
+
     # way 2 button callback 
     # submit function
     # def btn_submit(self):
@@ -112,10 +125,11 @@ class FiboStatsView(QWidget):
     #             self.update_result(results)
     
     # way 2 button callback 
-    # button submit callback connection
+    #button submit callback connection
     # def connect_btn_submit(self, callback):
     #     """callback for the apply submit button"""
     #     self.btn_submit_callback = callback
+
 
     def min_max_compare(self, cmin, cmax):
         """Ensure Minimum and Maximum value pairs are:

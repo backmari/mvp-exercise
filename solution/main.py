@@ -1,8 +1,9 @@
 import sys
 from qtpy.QtWidgets import QApplication, QMainWindow
-from model import FiboStatsModel
 from presenter import FiboStatsPresenter
-from view import FiboStatsView
+#way 1 and way 3
+#from model import FiboStatsModel
+#from view import FiboStatsView
 
 
 class MVPExercise(QMainWindow):
@@ -18,10 +19,16 @@ class MVPExercise(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle(f"Statistics")
-        self.fibostats_view = FiboStatsView(self)
-        self.figostats_model = FiboStatsModel()
-        self.fibostats_presenter = FiboStatsPresenter(self.fibostats_view, self.figostats_model)
-        self.setCentralWidget(self.fibostats_view)
+        
+        #way 1 and way 3
+        #self.fibostats_view = FiboStatsView(self)
+        #self.figostats_model = FiboStatsModel()
+        #self.fibostats_presenter = FiboStatsPresenter(self.fibostats_view, self.figostats_model)
+        #self.setCentralWidget(self.fibostats_view)
+        
+        #way 1
+        self.fibostats_presenter = FiboStatsPresenter()
+        self.setCentralWidget(self.fibostats_presenter.view)
 
 
 if __name__ == "__main__":

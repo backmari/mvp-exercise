@@ -1,20 +1,29 @@
 """Presenter for the Fibonacci Calculations"""
+#way 1
+from model import FiboStatsModel
+from view import FiboStatsView
 
 class FiboStatsPresenter:
     """FiboStats presenter"""
 
-    def __init__(self, view, model):
+    def __init__(self):
+        
+        #way 1
+        # define view and model here
+        view = FiboStatsView(self)
+        model = FiboStatsModel()
+        
         self._view = view
         self._model = model
 
         #error message from model to view
         self.model.connect_error_message(self.error_message)
 
-        #way 1 presenter definition
+        #way 3 presenter definition
         #include the button click definition here
-        self.view.fib_btn.clicked.connect(self.submit_fib)
+        #self.view.fib_btn.clicked.connect(self.submit_fib)
 
-        #way 2 use callbacks
+        #way 2 use callbacks use view function
         #self.view.connect_btn_submit(self.submit_fib_cal)
 
     @property
@@ -31,7 +40,7 @@ class FiboStatsPresenter:
         """Pass error message to the view"""
         self.view.show_error_message(msg, **kwargs)
 
-    #way 1 presenter definition
+    #way 1 and 3 presenter definition
     def submit_fib(self):
         """Submit the parameters to the model"""
 
