@@ -8,7 +8,7 @@ class FiboStatsPresenter:
         #error message from model to view
         self.model.connect_error_message(self.error_message)
 
-        #way 1
+        #way 1 presenter definition
         #include the button click definition here
         self.view.fib_btn.clicked.connect(self.submit_fib)
 
@@ -29,6 +29,7 @@ class FiboStatsPresenter:
         """Pass error message to the view"""
         self.view.show_error_message(msg, **kwargs)
 
+    #way 1 presenter definition
     def submit_fib(self):
         """Submit the parameters to the model"""
 
@@ -42,10 +43,11 @@ class FiboStatsPresenter:
             self.view.update_result(data)
 
 
-    def submit_fib_cal(self, a,b):
-        """Submit the parameters to the model"""
+    # way 2 button callback 
+    # def submit_fib_cal(self, a,b):
+    #     """Submit the parameters to the model"""
 
-        # send to model for processing
-        sequence = self.model.do_calculate(a, b)
-        #update the results
-        return sequence 
+    #     # send to model for processing
+    #     sequence = self.model.do_calculate(a, b)
+    #     #update the results
+    #     return sequence 

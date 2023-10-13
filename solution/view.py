@@ -17,8 +17,10 @@ class FiboStatsView(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.field_errors = []
-        # button callbacks
-        self.btn_submit_callback = None
+        
+        # way 2 button callback 
+        # button callback
+        #self.btn_submit_callback = None
 
         layout = QFormLayout()
 
@@ -67,7 +69,8 @@ class FiboStatsView(QWidget):
         self.start.valueChanged.connect(lambda: self.min_max_compare(self.start, self.end))
         self.end.valueChanged.connect(lambda: self.min_max_compare(self.start, self.end))
 
-        #way 2 definitions here
+        #way 2 button callback 
+        # definitions here
         #self.fib_btn.clicked.connect(self.btn_submit)
 
     def update_result(self, data):
@@ -96,20 +99,23 @@ class FiboStatsView(QWidget):
         end = self.end.value()
         return start,end
     
-    def btn_submit(self):
-        #submit_fib
-        # get values from view
-        start = self.start.value()
-        end = self.end.value()
-        if self.btn_submit_callback:
-            results = self.btn_submit_callback(start,end)
-            if results:
-                self.update_result(results)
-
-    def connect_btn_submit(self, callback):
-        """callback for the apply submit button"""
-        self.btn_submit_callback = callback
-
+    # way 2 button callback 
+    # submit function
+    # def btn_submit(self):
+    #     #submit_fib
+    #     # get values from view
+    #     start = self.start.value()
+    #     end = self.end.value()
+    #     if self.btn_submit_callback:
+    #         results = self.btn_submit_callback(start,end)
+    #         if results:
+    #             self.update_result(results)
+    
+    # way 2 button callback 
+    # button submit callback connection
+    # def connect_btn_submit(self, callback):
+    #     """callback for the apply submit button"""
+    #     self.btn_submit_callback = callback
 
     def min_max_compare(self, cmin, cmax):
         """Ensure Minimum and Maximum value pairs are:
