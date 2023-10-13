@@ -91,17 +91,17 @@ class FiboStatsView(QWidget):
         self.perc95.setVisible(flag)
 
     def get_parameters(self):
-        a = self.start.value()
-        b = self.end.value()
-        return a,b
+        start = self.start.value()
+        end = self.end.value()
+        return start,end
     
     def btn_submit(self):
         #submit_fib
         # get values from view
-        a = self.start.value()
-        b = self.end.value()
+        start = self.start.value()
+        end = self.end.value()
         if self.btn_submit_callback:
-            results = self.btn_submit_callback(a,b)
+            results = self.btn_submit_callback(start,end)
         self.update_result(results)
 
     def connect_btn_submit(self, callback):
