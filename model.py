@@ -4,8 +4,8 @@ from fibonacci import fibonacci
 import statistics
 import numpy as np 
 
-class HistogramModel:
-    """Histogram model"""
+class FiboStatsModel:
+    """Fiobancci stats model"""
 
     def __init__(self):
         self.error_callback = None

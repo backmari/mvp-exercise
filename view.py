@@ -1,4 +1,4 @@
-"""PyQt QGroupBox for the fibonacci parameters"""
+"""PyQt Widget for the fibonacci parameters"""
 from qtpy.QtWidgets import (
     QWidget,
     QPushButton,
@@ -8,13 +8,14 @@ from qtpy.QtWidgets import (
     QLabel
 )
 
+from invalid_styles import INVALID_QSPINBOX
 
-class Histogram(QWidget):
-    """Histogram widget"""
+class FiboStatsView(QWidget):
+    """FiboStats widget"""
 
     def __init__(self, parent=None):
         super().__init__(parent)
-
+        self.field_errors = []
         # button callbacks
         self.btn_submit_callback = None
 
@@ -53,11 +54,20 @@ class Histogram(QWidget):
         layout.addWidget(self.fib_btn)
 
         self.setLayout(layout)
+        
+        #initial state
+        #hide results
         self.set_result_visible(False)
-
+        #deactivate the button
+        self.fib_btn.setEnabled(False)
+        
         #onclick events
+        # check min<max
+        self.start.valueChanged.connect(lambda: self.min_max_compare(self.start, self.end))
+        self.end.valueChanged.connect(lambda: self.min_max_compare(self.start, self.end))
+
         #way 2 definitions here
-        self.fib_btn.clicked.connect(self.btn_submit)
+        #self.fib_btn.clicked.connect(self.btn_submit)
 
     def update_result(self, data):
         # display the Fibonacci sequence statistics
@@ -69,6 +79,8 @@ class Histogram(QWidget):
     def set_result_visible(self, flag):
         # show/hide the statistics fields and labels
         
+        self.result.setVisible(flag)
+
         self.mean_label.setVisible(flag)
         self.mean.setVisible(flag)
 
@@ -78,6 +90,11 @@ class Histogram(QWidget):
         self.perc95_label.setVisible(flag)
         self.perc95.setVisible(flag)
 
+    def get_parameters(self):
+        a = self.start.value()
+        b = self.end.value()
+        return a,b
+    
     def btn_submit(self):
         #submit_fib
         # get values from view
@@ -91,46 +108,35 @@ class Histogram(QWidget):
         """callback for the apply submit button"""
         self.btn_submit_callback = callback
 
-#     def set_field_invalid_state(self, item):
-#         """if parent exists then call the corresponding function and update the color"""
-#         if self.parent():
-#             self.parent().set_field_invalid_state(item)
-#         item.setStyleSheet(INVALID_QLINEEDIT)
 
-#     def set_field_valid_state(self, item):
-#         """remove the item from the field_error list and its invalid style, if it was previously invalid
-#         and enable the corresponding button"""
-#         if self.parent():
-#             self.parent().set_field_valid_state(item)
-#         item.setStyleSheet("")
+    def min_max_compare(self, cmin, cmax):
+        """Ensure Minimum and Maximum value pairs are:
+        Minimum < Maximum """
 
-#     def validate_symmentry_once(self):
-#         """validate symmetry once the current invalid text is updated. Note: the actual validation happens in models"""
-#         self.set_field_valid_state(self.symmetry_operations)
-#         self.symmetry_operations.disconnect()
+        self.set_field_valid_state(cmin)
+        self.set_field_valid_state(cmax)
 
-#     @property
-#     def is_valid(self) -> bool:
-#         """Checks if the histogram parameters are valid
+        min_value = int(cmin.text())
+        max_value = int(cmax.text())
 
-#         Returns
-#         -------
-#             bool -- True if valid, False otherwise
-#         """
-
-#         # check if symmetry is valid
-#         # NOTE: the symmetry checking is done in histogram_callback and border colors/state are updapted, and the
-#         #       actual checking is done in histogram.model.
-#         #       the current design requires packing the data as a dictionary,
-#         #       so we pack it here.
-#         parameters = {}
-#         parameters["SymmetryOperations"] = self.symmetry_operations.text()
-#         self.set_field_valid_state(self.symmetry_operations)
-#         sym_valid_state = self.histogram_callback(parameters) if self.histogram_callback else False
-#         if not sym_valid_state:
-#             self.set_field_invalid_state(self.symmetry_operations)
-#             self.symmetry_operations.textEdited.connect(self.validate_symmentry_once)
-
-#         return sym_valid_state
+        #check: min<max
+        valid = min_value < max_value
+        if not valid:
+            self.set_field_invalid_state(cmin)
+            self.set_field_invalid_state(cmax)
 
 
+    def set_field_invalid_state(self, item):
+        """include the item in the field_error list and disable the corresponding button"""
+        if item not in self.field_errors:
+            self.field_errors.append(item)
+        self.fib_btn.setEnabled(False)
+        item.lineEdit().setStyleSheet(INVALID_QSPINBOX)
+
+    def set_field_valid_state(self, item):
+        """remove the item from the field_error list and enable the corresponding button"""
+        if item in self.field_errors:
+            self.field_errors.remove(item)
+        if len(self.field_errors) == 0:
+            self.fib_btn.setEnabled(True)
+        item.lineEdit().setStyleSheet("")

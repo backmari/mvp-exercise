@@ -1,8 +1,8 @@
 import sys
 from qtpy.QtWidgets import QApplication, QMainWindow
-from model import HistogramModel
-from presenter import HistogramPresenter
-from view import Histogram
+from model import FiboStatsModel
+from presenter import FiboStatsPresenter
+from view import FiboStatsView
 
 
 class MVPExercise(QMainWindow):
@@ -17,15 +17,15 @@ class MVPExercise(QMainWindow):
 
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.setWindowTitle(f"MVP exercise")
-        self.histogram_widget = Histogram(self)
-        self.histogram_model = HistogramModel()
-        self.histogram_presenter = HistogramPresenter(self.histogram_widget, self.histogram_model)
-        self.setCentralWidget(self.histogram_widget)
+        self.setWindowTitle(f"Statistics")
+        self.fibostats_view = FiboStatsView(self)
+        self.figostats_model = FiboStatsModel()
+        self.fibostats_presenter = FiboStatsPresenter(self.fibostats_view, self.figostats_model)
+        self.setCentralWidget(self.fibostats_view)
 
 
 if __name__ == "__main__":
-    # start widget
+    # start window
     app = QApplication(sys.argv)
     window = MVPExercise()
     window.show()
