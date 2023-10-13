@@ -1,3 +1,5 @@
+"""Presenter for the Fibonacci Calculations"""
+
 class FiboStatsPresenter:
     """FiboStats presenter"""
 
