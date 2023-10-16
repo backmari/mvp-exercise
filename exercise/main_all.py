@@ -18,6 +18,9 @@ class MVPExercise(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setWindowTitle(f"Statistics")
+        self.view = FiboStats()
+        self.setCentralWidget(self.view)
+
 
 if __name__ == "__main__":
     # start window
