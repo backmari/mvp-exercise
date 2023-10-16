@@ -1,0 +1,9 @@
+name: mvp-exercise
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - qtpy
+  - pyqt
+  - numpy
