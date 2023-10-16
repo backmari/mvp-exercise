@@ -20,7 +20,7 @@ class MVPExercise(QMainWindow):
         super().__init__(parent)
         self.setWindowTitle(f"Statistics")
         
-        #way 1 and way 3
+        #way 2 and way 3
         #self.fibostats_view = FiboStatsView(self)
         #self.figostats_model = FiboStatsModel()
         #self.fibostats_presenter = FiboStatsPresenter(self.fibostats_view, self.figostats_model)
