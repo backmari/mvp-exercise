@@ -14,7 +14,7 @@ The directory `./exercise/` contains the source code for a small Qt-based app fo
 
 Assuming python3 and pip in the environment:
 
-    pip install numpy py-fibonacci PyQt5 qtpy
+    pip install numpy py-fibonacci qtpy pyqt5
 
 ## Run
 
