@@ -9,6 +9,9 @@ class FiboStatsModel:
 
     def __init__(self):
         self.error_callback = None
+        
+        #store the results for future usage
+        self.results = {}
 
     def connect_error_message(self, callback):
         """Set the callback function for error messages"""
@@ -24,6 +27,7 @@ class FiboStatsModel:
             results["stdev"] = round(statistics.stdev(sequence),2)
             results["mean"] = round(statistics.mean(sequence),2)
             results["perc95"] = round(np.percentile(sequence,95),2)
+            self.results = results
             #typeerror
             #results["perc95"] = round(str(np.percentile(sequence,95)),2)
             return results        
