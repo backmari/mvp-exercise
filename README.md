@@ -19,3 +19,13 @@ Assuming python3 and pip in the environment:
 ## Run
 
     python exercise/main_all.py
+
+
+## Quick Start!
+
+    mkdir mvp-exercise
+    cd mvp-exercise
+    git clone git@github.com:backmari/mvp-exercise.git .
+    mamba env create --file environment.yml
+    conda activate mvp-exercise
+    python exercise/main_all.py
